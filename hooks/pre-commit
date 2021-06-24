@@ -17,7 +17,7 @@ currentBranchName = out("git rev-parse --abbrev-ref HEAD")
 if currentBranchName == 'develop':
     out('git fetch')
     #out('git checkout -m origin/develop version.txt')
-    out("git checkout HEAD -- version.txt")
+    out("git checkout origin/develop -- myfile.txt")
     out("git add version.txt")
     print("[INFO] Up to date with develop.")
 print("[INFO] Working on: " +currentBranchName)
