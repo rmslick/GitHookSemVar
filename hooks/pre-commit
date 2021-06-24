@@ -15,14 +15,36 @@ currentBranchName = out("git rev-parse --abbrev-ref HEAD")
 # Sync effort
 #https://www.atlassian.com/git/tutorials/comparing-workflows
 # change to remote on version.txt -> no push
-if currentBranchName == 'develop':
-    file = open("version.txt","r")
-    version = file.readlines()[0].strip()
-    v_nums = version.split('.')
-    print("[INFO] Up to date with develop.")
-    print(v_nums)
-print("[INFO] Working on: " +currentBranchName)
-
+bump_branches = ["release","feature","patch"]
+develop_merge_history = (out('git log --oneline develop')).splitlines()
+merged = ""
+merged_into = ""
+for log in develop_merge_history:
+    if log.split()[1] == "Merge" and log.split()[5] == "develop":
+        merged = (log.split()[3]).strip('\"')
+        merged = (log.split()[3]).strip('\'')
+        merged_into = log.split()[5]
+        break
+merged = merged.split("-")[0]
+print("[INFO] Recent merge was a "+merged + " branch into " + merged_into)
+if merged in bump_branches and currentBranchName == 'develop':
+    versionFile = open("version.txt","r")
+    version = versionFile.readlines()[0].strip()
+    majMinFeat = version.split('.')
+    if merged == "realease":
+        majMinFeat[0] = str(int(majMinFeat[0]) +1)
+        majMinFeat[1] = '0'
+        majMinFeat[2] = '0'
+    if merged == 'feature':
+        print('[INFO] Bump feat')
+        print('.'.join(majMinFeat))
+        majMinFeat[1] = str(int(majMinFeat[1]) +1)
+        print('.'.join(majMinFeat))
+    elif merged == 'patch':
+        majMinFeat[2] = str(int(majMinFeat[2]) +1)
+    versionFile.write('.'.join(majMinFeat))
+    versionFile.close()
+    out('git add version.txt')
 # report hyphen error
 if currentBranchName != "develop" and currentBranchName != "master" and currentBranchName.find('-') == -1:
     print("[ERROR] Branch name not follow naming conventions.\n[HINT] Non master/develop branches must include hyphen.\n[HINT] Must follow [branchtype]-[descriptivename] format")
