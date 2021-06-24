@@ -34,7 +34,7 @@ Located in the hooks folder there are three hooks: pre-merge-commit, pre-commit 
 
 ### Testing
 1. Clone repo
-2. Run: ```bash python3 buildscript.py to configure hooks in hooks/ to hooks in .git/hooks```
+2. Run: ```python3 buildscript.py``` to configure hooks in hooks/ to hooks in .git/hooks```
 3. Create a branch. Using naming conventions to test versioning or arbitrary name to test branching pre-commit check on non-conforming branch names.
 4. Commit change from branch, merge into develop.
 5. Add, commit and push changed to origin/develop
