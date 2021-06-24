@@ -13,10 +13,11 @@ devBranches = ["release","feature","patch","private"]
 # obtain current branch name
 currentBranchName = out("git rev-parse --abbrev-ref HEAD")
 # Sync effort
-
+#https://www.atlassian.com/git/tutorials/comparing-workflows
+# change to remote on version.txt -> no push
 if currentBranchName == 'develop':
     file = open("version.txt","r")
-    version = file.readline().split()
+    version = file.readlines()[0].strip()
     v_nums = version.split('.')
     print("[INFO] Up to date with develop.")
     print(v_nums)
