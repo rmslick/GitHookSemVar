@@ -20,6 +20,7 @@ develop_merge_history = (out('git log --oneline develop')).splitlines()
 merged = ""
 merged_into = ""
 for log in develop_merge_history:
+    print(log)
     if log.split()[1] == "Merge" and log.split()[5] == "develop":
         merged = (log.split()[3]).strip('\"')
         merged = (log.split()[3]).strip('\'')
